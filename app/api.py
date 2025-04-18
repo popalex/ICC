@@ -1,4 +1,5 @@
 import os
+import uuid
 from typing import List
 
 from fastapi import APIRouter, File, UploadFile
@@ -17,7 +18,10 @@ async def upload_images(files: List[UploadFile] = File(...)):
 
     file_paths = []
     for file in files:
-        file_path = os.path.join(UPLOAD_DIR, file.filename)
+        # Generate a unique filename
+        name, ext = os.path.splitext(file.filename)
+        unique_filename = f"{name}_{uuid.uuid4().hex}{ext}"
+        file_path = os.path.join(UPLOAD_DIR, unique_filename)
         with open(file_path, "wb") as buffer:
             buffer.write(await file.read())
         file_paths.append(file_path)
