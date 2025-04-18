@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Clustering Gallery</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { text-align: center; }
+        .cluster { margin-bottom: 40px; }
+        .cluster h3 { font-size: 1.5em; color: #444; }
+        img { width: 150px; margin: 5px; border-radius: 8px; }
+        .upload-form { text-align: center; margin-bottom: 30px; }
+        .upload-form input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .upload-form input[type="file"] {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Clustering App</h1>
+
+    <!-- Upload form -->
+    <div class="upload-form">
+        <h2>Upload Images for Clustering</h2>
+        <form action="/upload/" enctype="multipart/form-data" method="post">
+            <input name="files" type="file" multiple>
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+
+    <!-- Display clusters -->
+    <h2>Clustered Images</h2>
+    {% for cluster, images in clusters.items() %}
+        <div class="cluster">
+            <h3>Cluster {{ cluster }} {% if labels[cluster] %}- {{ labels[cluster] }}{% endif %}</h3>
+            <div>
+                {% for img in images %}
+                    <img src="{{ img }}" alt="Clustered Image">
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</body>
+</html>
