@@ -44,11 +44,17 @@ def process_images_and_cluster(img_paths):
         filename = os.path.basename(path)
         clusters.setdefault(str(label), []).append(f"/static/{filename}")
 
-    # Label the clusters using CLIP
-    label_clusters()  # Automatically assigns labels like 'a cat', 'a beach', etc.
-
     # Update the database with new clusters and labels
     db = SessionLocal()
+
+    for path, label in zip(img_paths, labels):
+        filename = os.path.basename(path)
+        image = Image(filename=filename, cluster=int(label), label=None)
+        db.merge(image)
+    db.commit()
+
+    # Label the clusters using CLIP (now the clusters exist in DB)
+    label_clusters()
 
     for path, label in zip(img_paths, labels):
         filename = os.path.basename(path)
