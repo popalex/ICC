@@ -14,8 +14,6 @@ UPLOAD_DIR = "app/static"
 
 @router.post("/api/upload/")
 async def upload_images(files: List[UploadFile] = File(...)):
-    print("Received files:", files)
-    
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
     file_paths = []

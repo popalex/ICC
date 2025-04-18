@@ -51,6 +51,8 @@ def label_clusters():
         best_label_idx = similarity.argmax().item()
         label = TEXT_LABELS[best_label_idx]
 
+        print(f"Cluster {cluster_id}: Assigned label '{label}', Similarity scores: {similarity.tolist()}'")
+
         # Save label to DB
         for img in imgs:
             img.label = label
