@@ -2,12 +2,13 @@ import os
 
 import numpy as np
 import torch
-from PIL import Image
+from PIL import Image as PILImage  # Alias PIL.Image to avoid conflict
 from sklearn.cluster import KMeans
 from torchvision import models, transforms
 
 from .clip_labeler import label_clusters
-from .database import Image, SessionLocal
+from .database import SessionLocal, Image  # Ensure the database model is imported correctly
+
 
 # Load pre-trained feature extractor (ResNet)
 model = models.resnet18(pretrained=True)
@@ -20,7 +21,7 @@ transform = transforms.Compose([
 ])
 
 def extract_features(img_path):
-    image = Image.open(img_path).convert("RGB")
+    image = PILImage.open(img_path).convert("RGB")
     tensor = transform(image).unsqueeze(0)
     with torch.no_grad():
         features = model(tensor)

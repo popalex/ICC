@@ -1,6 +1,6 @@
 import open_clip
 import torch
-from PIL import Image
+from PIL import Image as PILImage
 from torchvision import transforms
 from .database import SessionLocal, Image
 
@@ -32,7 +32,7 @@ def label_clusters():
         # Average CLIP embeddings of images in this cluster
         embeddings = []
         for img in imgs:
-            image = Image.open(f"app/static/{img.filename}").convert("RGB")
+            image = PILImage.open(f"app/static/{img.filename}").convert("RGB")
             tensor = preprocess(image).unsqueeze(0).to(device)
             embedding = model.encode_image(tensor)
             embeddings.append(embedding)

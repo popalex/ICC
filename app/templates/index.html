@@ -42,10 +42,14 @@
             <h3>Cluster {{ cluster }} {% if labels[cluster] %}- {{ labels[cluster] }}{% endif %}</h3>
             <div>
                 {% for img in images %}
-                    <img src="{{ img }}" alt="Clustered Image">
+                    <div style="display: inline-block; text-align: center; margin: 10px;">
+                        <img src="{{ img }}" alt="Clustered Image">
+                        <p>{{ labels[cluster] }}</p> <!-- Display the label below the image -->
+                    </div>
                 {% endfor %}
             </div>
         </div>
     {% endfor %}
+
 </body>
 </html>
