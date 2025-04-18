@@ -12,15 +12,17 @@ router = APIRouter()
 
 UPLOAD_DIR = "app/static"
 
-@router.post("/upload/")
+@router.post("/api/upload/")
 async def upload_images(files: List[UploadFile] = File(...)):
+    print("Received files:", files)
+    
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
     file_paths = []
     for file in files:
         # Generate a unique filename
         name, ext = os.path.splitext(file.filename)
-        unique_filename = f"{name}_{uuid.uuid4().hex}{ext}"
+        unique_filename = f"{uuid.uuid4().hex}{ext}"
         file_path = os.path.join(UPLOAD_DIR, unique_filename)
         with open(file_path, "wb") as buffer:
             buffer.write(await file.read())
@@ -31,7 +33,7 @@ async def upload_images(files: List[UploadFile] = File(...)):
     return JSONResponse(content={"clusters": clusters})
 
 
-@router.get("/clusters/")
+@router.get("/api/clusters/")
 def get_clusters():
     db = SessionLocal()
     results = db.query(Image).all()
